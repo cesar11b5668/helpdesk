@@ -1,9 +1,9 @@
 const modelpersonal = {
-    queryGetUsers: "SELECT * FROM personal",
-    queryGetUsersById: `SELECT * FROM personal WHERE ID = ?`,
-    queryDeleteduser: `UPDATE personal SET Activo = 'N'WHERE ID ?`,
-    queryuserexist: `SELECT Nombre FROM personal WHERE Usuario = '?'`,
-    queryadduser: `INSERT INTO personal (
+    queryGetpersonal: "SELECT * FROM personal",
+    queryGetpersonalById: `SELECT * FROM personal WHERE ID = ?`,
+    queryDeletedpersonal: `UPDATE personal SET Activo = 'N'WHERE ID ?`,
+    querypersonalexist: `SELECT Nombre FROM personal WHERE Usuario = '?'`,
+    queryaddpersonal: `INSERT INTO personal (
        Usuario,
        Nombre,
        Apellidos,
@@ -20,11 +20,11 @@ const modelpersonal = {
        '?'
       
     )`,
-    querygetuserinfo: `SELECT usuario, Nombre, Apellidos, contrasena, departamento 
+    querygetpersonalinfo: `SELECT usuario, Nombre, Apellidos, contrasena, departamento 
     FROM personal 
     WHERE personal = '?'`,
 
-   queryupdatebyusuario:`UPDATE personal SET (
+   queryupdatebypersonal:`UPDATE personal SET (
        Nombre,= '?',
        Apellidos,='?',
        Edad,=? ,
@@ -34,7 +34,7 @@ const modelpersonal = {
 
    querysignIn: `SELECT Usuario, Contrasena, Activo FROM personal WHERE personal = '?'`,    
 }
-const updateUsuario = (
+const updatepersonal = (
   Nombre,
   Apellidos,
   contrasena,

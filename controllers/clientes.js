@@ -1,14 +1,15 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs")
 const pool = require("../db/connection");
-const {modelclientes, updatecliente} = require("../models/clientes");
-const getclientes = async (req = request, res = response) => {
+const {modelcliente, updatecliente} = require("../models/clientes");
+
+const getcliente = async (req = request, res = response) => {
  let conn;
 
  try {
     conn = await pool.getConnection()
 
-    const clientes = await conn.query(modeloclientes.queryGetclientes, (error) => {throw new Error(error)})
+    const clientes = await conn.query(modelcliente.queryGetcliente, (error) => {throw new Error(error)})
 
     if (!clientes) {
         res.status(404).json({msg: "no se encontraron registros"})
@@ -287,4 +288,4 @@ const getclienteByID = async (req = request, res = response) => {
    }
 }
 
-module.exports = {getclientes, getclienteByID, deleteclienteByID, addcliente, updateclienteBycliente, signIn, newPassword}
+module.exports = {getcliente, getclienteByID, deleteclienteByID, addcliente, updateclienteBycliente, signIn, newPassword}

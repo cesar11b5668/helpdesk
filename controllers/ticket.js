@@ -131,4 +131,4 @@ const GetTicketById = async (req = request, res = response) => {
    }
   }
 
-module.exports = {getTicket,addticket,GetTicketById,deleteticketByID,updateTicketByTicket}
+module.exports = {getTicket,addticket,GetTicketById,deleteticketByID,}

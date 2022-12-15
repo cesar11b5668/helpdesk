@@ -1,9 +1,9 @@
-const modelpersonal = {
-    queryGetUsers: "SELECT * FROM cliente",
-    queryGetUsersById: `SELECT * FROM cliente WHERE ID = ?`,
-    queryDeleteduser: `UPDATE cliente SET especificaciones = 'N'WHERE ID ?`,
-    queryuserexist: `SELECT Nombre FROM cliente WHERE Nombre = '?'`,
-    queryadduser: `INSERT INTO cliente (
+const modelclientes = {
+    querygetcliente: "SELECT * FROM cliente",
+    queryGetclienteById: `SELECT * FROM cliente WHERE ID = ?`,
+    queryDeletedcliente: `UPDATE cliente SET especificaciones = 'N'WHERE ID ?`,
+    queryclienteexist: `SELECT Nombre FROM cliente WHERE Nombre = '?'`,
+    queryaddcliente: `INSERT INTO cliente (
        Usuario,
        Nombre,
        Apellidos,
@@ -20,25 +20,25 @@ const modelpersonal = {
        '?'
       
     )`,
-    querygetuserinfo: `SELECT usuario, Nombre, Apellidos, contrasena, especificaciones 
-    FROM  clientes
-    WHERE clientes = '?'`,
+    queryGetclienteinfo: `SELECT usuario, Nombre, Apellidos, contrasena, especificaciones 
+    FROM  cliente
+    WHERE cliente = '?'`,
 
-   queryupdatebyusuario:`UPDATE personal SET (
+   queryupdatebycliente:`UPDATE personal SET (
        Nombre,= '?',
        Apellidos,='?',
-       Edad,=? ,
-       Genero,='?',
-       Fecha_nacimiento='?',
-       WHERE Usuario = '?'`,
+       usuario,=? ,
+       contrasena,='?',
+       especificaciones='?',
+       WHERE clientes = '?'`,
 
    querysignIn: `SELECT Usuario, Contrasena, Activo FROM personal WHERE personal = '?'`,    
 }
-const updateUsuario = (
+const updateclientes = (
   Nombre,
   Apellidos,
   contrasena,
-  departamento,
+  especificaciones,
   Contrasena,
   usuario,
 ) => {
@@ -46,7 +46,7 @@ return `UPDATE personal SET (
   Nombre,= '${Nombre}',
   Apellidos,='${Apellidos}',
   contrasena,= ${Contrasena},
-  departamento,=${departamento},
+  especificaciones,=${especificaciones},
   usuario,=${usuario},
   contrasena,=${contrasena}
     WHERE personal = '${personal}'`

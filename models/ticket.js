@@ -1,4 +1,4 @@
-const modeloticket = {
+const modelticket = {
     queryGetUsers: "SELECT * FROM ticket",
     queryGetUsersById: `SELECT * FROM ticket WHERE ID = ?`,
     queryDeleteduser: `UPDATE ticket SET Activo = 'N'WHERE ID ?`,
