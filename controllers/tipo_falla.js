@@ -1,20 +1,20 @@
 const { request, response } = require("express");
 const bcryptjs = require("bcryptjs")
 const pool = require("../db/connection");
-const {modeloclientes, updatecliente} = require("../models/clientes");
+const {modelotipo_fallas} = require("../models/tipo_fallas");
 const gettipo_fallas = async (req = request, res = response) => {
  let conn;
 
  try {
     conn = await pool.getConnection()
 
-    const clientes = await conn.query(modelofallas.queryGetfallas, (error) => {throw new Error(error)})
+    const tipo_fallas = await conn.query(modelofallas.queryGetfallas, (error) => {throw new Error(error)})
 
-    if (!clientes) {
+    if (!tipo_fallas) {
         res.status(404).json({msg: "no se encontraron registros"})
         return
     }
-    res.json({clientes})
+    res.json({tipo_fallas})
  } catch (error) {
     console.log(error)
     res.status(500).json({error})
@@ -24,20 +24,20 @@ const gettipo_fallas = async (req = request, res = response) => {
     }
  }
 }
-const getclienteByID = async (req = request, res = response) => {
+const gettipo_fallasByID = async (req = request, res = response) => {
    const {id} = req.params
    let conn;
   
    try {
       conn = await pool.getConnection()
   
-      const [cliente] = await conn.query(modelofallas.queryGetclientesById,[id], (error) => {throw new Error(error)})
+      const [tipo_falla] = await conn.query(modelofallas.queryGettipo_fallasById,[id], (error) => {throw new Error(error)})
   
-      if (!cliente) {
+      if (!tipo_falla) {
           res.status(404).json({msg: `no se encontro registro con el ID ${id}`})
           return
       }
-      res.json({cliente})
+      res.json({tipo_falla})
    } catch (error) {
       console.log(error)
       res.status(500).json({error})
@@ -47,16 +47,16 @@ const getclienteByID = async (req = request, res = response) => {
       }
    }
   }
-  const deleteclienteByID = async (req = request, res = response) => {
+  const deletetipo_fallaByID = async (req = request, res = response) => {
    const {id} = req.params
    let conn;
   
    try {
       conn = await pool.getConnection()
-      const {affectedRows} = await conn.query( modeloclientes.queryDeletedcliente,[id], (error) => {throw new Error(error)})
+      const {affectedRows} = await conn.query( modelotipo_fallas.queryDeletedtipo_falla,[id], (error) => {throw new Error(error)})
   
       if (affectedRows=== 0) {
-          res.status(404).json({msg: `No se pudo eliminar el cliente con el registro con el ID ${id}`})
+          res.status(404).json({msg: `No se pudo eliminar el tipo_falla con el registro con el ID ${id}`})
           return
       }
       res.json({msg: `El usario con ID ${id} se elimino correctamente`})
@@ -69,24 +69,21 @@ const getclienteByID = async (req = request, res = response) => {
       }
    }
   }
-  const addcliente = async (req = request, res = response) => {
+  const addtipo_falla = async (req = request, res = response) => {
    const {
-      Nombre,
-      Apellidos,
-      Usuario,
-      especificaciones,
-      Contrasena,
-      Activo
+      id,
+      Nombre_de_falla,
+      Descripcion_de_falla,
+      Prioridad_de_falla
    } = req.body
    if(      
-   !Nombre||
-   !Apellidos||
-   !Usuario||
-   !Contrasena||
-   !especificaciones||
-   !Activo
-   ){
-      res.status(400).json({msg: "Falta informacion del cliente"})
+   !id||
+   !Nombre_de_falla||
+   !Descripcion_de_falla||
+   !Prioridad_de_falla
+   )
+   {
+      res.status(400).json({msg: "Falta informacion del tipo_falla"})
       return
    }
    let conn;
@@ -94,32 +91,28 @@ const getclienteByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const cliente = await conn.query(modeloclientes.queryclienteexist,[cliente])
+      const tipo_falla = await conn.query(modelotipo_fallas.querytipo_fallaexist,[tipo_falla])
 
-      if(!cliente){
-         res.status(403).json({msg: `El cliente ${cliente} ya se encuentra registrado`})
+      if(!tipo_falla){
+         res.status(403).json({msg: `El tipo_falla ${tipo_falla} ya se encuentra registrado`})
          return
       }
 
-      const salt = bcryptjs.genSaltSync()
-      const ContrasenaCifrada = bcryptjs.hashSync(Contrasena, salt)
-
-      const affectedRows = await conn.query(modeloclientes.queryaddcliente[
-         Nombre,
-         Apellidos,
-         Usuario,
-         especificaciones,
-         ContrasenaCifrada,
-         Activo
+      
+      const affectedRows = await conn.query(modelotipo_fallas.queryaddtipo_falla[
+         id,
+         Nombre_de_falla,
+         Descripcion_de_falla,
+         Prioridad_de_falla
       
       ] , (error) => {throw new Error(error)})
       
 
       if (affectedRows === 0) {
-         res.status(404).json({msg: `no se pudo agregar el registro del cliente ${cliente}`})
+         res.status(404).json({msg: `no se pudo agregar el registro del tipo_falla ${tipo_falla}`})
          return
    }
-      res.json({msg: `el cliente ${cliente} se agrego correctamente :D`})
+      res.json({msg: `el tipo_falla ${tipo_falla} se agrego correctamente :D`})
       return
    } catch (error) {
       console.log(error)
@@ -131,58 +124,4 @@ const getclienteByID = async (req = request, res = response) => {
    }
   }
  
-   const {
-      Nombre,
-      Apellidos,
-      Usuario,
-      especificaciones,
-      Contrasena,
-      Activo
-   } = req.body
-   console.log({cliente,
-      Nombre,
-      Apellidos,
-      Usuario,
-      especificaciones,
-      Contrasena,
-      Activo})
-   if(      
-   !Usuario||
-   !Nombre||
-   !Apellidos||
-   !especificaciones||
-   !Contrasena||
-   !Activo   
-   )
-   {
-      res.status(400).json({msg: "Falta informacion del cliente"})
-      return
-   }
-   let conn;
-  
-   try {
-      conn = await pool.getConnection()
-
-      const cliente = await conn.query(modeloclientes.querygetclienteinfo, [cliente])
-
-      if(cliente){
-         res.status(403).json({msg: `El cliente ${cliente} no se encuentra registrado`})
-      }
-
-      const affectedRows = await conn.query(updatecliente (Nombre,Apellidos,Usuario,Contrasena,especificaciones,Activo), (error) => {throw new Error(error)})
-      
-
-      if (affectedRows === 0) {
-         res.status(404).json({msg: `no se pudo agregar el registro del cliente ${cliente}`})
-         return
-   }
-      res.json({msg: `el cliente ${cliente} se actualizo correctamente :D`})
-   } catch (error) {
-      console.log(error)
-      res.status(500).json({error})
-   } finally{
-      if (conn) {
-          conn.end()
-      }
-   }
-module.exports = {gettipo_fallas, getclienteByID, deleteclienteByID, addcliente, updateclienteBycliente, signIn, newPassword}
+module.exports = {gettipo_fallas, gettipo_fallasByID, deletetipo_fallaByID, addtipo_falla}

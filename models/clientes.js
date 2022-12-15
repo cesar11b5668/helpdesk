@@ -1,5 +1,5 @@
-const modelclientes = {
-    querygetcliente: "SELECT * FROM cliente",
+const modelcliente = {
+    queryGetcliente: "SELECT * FROM cliente",
     queryGetclienteById: `SELECT * FROM cliente WHERE ID = ?`,
     queryDeletedcliente: `UPDATE cliente SET especificaciones = 'N'WHERE ID ?`,
     queryclienteexist: `SELECT Nombre FROM cliente WHERE Nombre = '?'`,
@@ -7,50 +7,45 @@ const modelclientes = {
        Usuario,
        Nombre,
        Apellidos,
-       contrasena,
-       especificaciones
+       Contrasena,
+       Especificaciones
     ) VALUES (
        '?',
        '?',
        '?',
        ?,
-       '?',
-       '?',
-       '?',
        '?'
-      
+         
     )`,
-    queryGetclienteinfo: `SELECT usuario, Nombre, Apellidos, contrasena, especificaciones 
+    queryGetclienteinfo: `SELECT Usuario, Nombre, Apellidos, Contrasena, Especificaciones 
     FROM  cliente
     WHERE cliente = '?'`,
 
-   queryupdatebycliente:`UPDATE personal SET (
+   queryupdatebycliente:`UPDATE cliente SET (
        Nombre,= '?',
        Apellidos,='?',
-       usuario,=? ,
-       contrasena,='?',
-       especificaciones='?',
+       Usuario,=? ,
+       Contrasena,='?',
+       Especificaciones='?',
        WHERE clientes = '?'`,
 
-   querysignIn: `SELECT Usuario, Contrasena, Activo FROM personal WHERE personal = '?'`,    
+   querysignIn: `SELECT Usuario, Contrasena, Activo FROM cliente WHERE cliente = '?'`,    
 }
 const updateclientes = (
   Nombre,
   Apellidos,
-  contrasena,
   especificaciones,
   Contrasena,
-  usuario,
+  Usuario,
 ) => {
-return `UPDATE personal SET (
+return `UPDATE cliente SET (
   Nombre,= '${Nombre}',
   Apellidos,='${Apellidos}',
   contrasena,= ${Contrasena},
   especificaciones,=${especificaciones},
-  usuario,=${usuario},
-  contrasena,=${contrasena}
-    WHERE personal = '${personal}'`
+  Usuario,=${Usuario}
+    WHERE cliente = '${cliente}'`
 }
 
 
-module.exports = {modelclientes ,updateclientes}
+module.exports = {modelcliente ,updateclientes}

@@ -32,7 +32,7 @@ const getclienteByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
   
-      const [cliente] = await conn.query(modeloclientes.queryGetclientesById,[id], (error) => {throw new Error(error)})
+      const [cliente] = await conn.query(modelclientes.queryGetclientesById,[id], (error) => {throw new Error(error)})
   
       if (!cliente) {
           res.status(404).json({msg: `no se encontro registro con el ID ${id}`})
@@ -54,7 +54,7 @@ const getclienteByID = async (req = request, res = response) => {
   
    try {
       conn = await pool.getConnection()
-      const {affectedRows} = await conn.query( modeloclientes.queryDeletedcliente,[id], (error) => {throw new Error(error)})
+      const {affectedRows} = await conn.query( modelcliente.queryDeletedcliente,[id], (error) => {throw new Error(error)})
   
       if (affectedRows=== 0) {
           res.status(404).json({msg: `No se pudo eliminar el cliente con el registro con el ID ${id}`})
@@ -75,17 +75,15 @@ const getclienteByID = async (req = request, res = response) => {
       Nombre,
       Apellidos,
       Usuario,
-      especificaciones,
+      Especificaciones,
       Contrasena,
-      Activo
    } = req.body
    if(      
    !Nombre||
    !Apellidos||
    !Usuario||
    !Contrasena||
-   !especificaciones||
-   !Activo
+   !Especificaciones
    ){
       res.status(400).json({msg: "Falta informacion del cliente"})
       return
@@ -95,7 +93,7 @@ const getclienteByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const cliente = await conn.query(modeloclientes.queryclienteexist,[cliente])
+      const cliente = await conn.query(modelcliente.queryclienteexist,[cliente])
 
       if(!cliente){
          res.status(403).json({msg: `El cliente ${cliente} ya se encuentra registrado`})
@@ -105,13 +103,12 @@ const getclienteByID = async (req = request, res = response) => {
       const salt = bcryptjs.genSaltSync()
       const ContrasenaCifrada = bcryptjs.hashSync(Contrasena, salt)
 
-      const affectedRows = await conn.query(modeloclientes.queryaddcliente[
+      const affectedRows = await conn.query(modelcliente.queryaddcliente[
          Nombre,
          Apellidos,
          Usuario,
-         especificaciones,
-         ContrasenaCifrada,
-         Activo
+         Especificaciones,
+         ContrasenaCifrada
       
       ] , (error) => {throw new Error(error)})
       
@@ -136,24 +133,22 @@ const getclienteByID = async (req = request, res = response) => {
       Nombre,
       Apellidos,
       Usuario,
-      especificaciones,
-      Contrasena,
-      Activo
+      Especificaciones,
+      Contrasena
+      
    } = req.body
-   console.log({cliente,
+   console.log({
       Nombre,
       Apellidos,
       Usuario,
-      especificaciones,
-      Contrasena,
-      Activo})
+      Especificaciones,
+      Contrasena})
    if(      
    !Usuario||
    !Nombre||
    !Apellidos||
-   !especificaciones||
-   !Contrasena||
-   !Activo   
+   !Especificaciones||
+   !Contrasena 
    )
    {
       res.status(400).json({msg: "Falta informacion del cliente"})
@@ -164,13 +159,13 @@ const getclienteByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const cliente = await conn.query(modeloclientes.querygetclienteinfo, [cliente])
+      const cliente = await conn.query(modelcliente.queryGetclienteinfo, [cliente])
 
       if(cliente){
          res.status(403).json({msg: `El cliente ${cliente} no se encuentra registrado`})
       }
 
-      const affectedRows = await conn.query(updatecliente (Nombre,Apellidos,Usuario,Contrasena,especificaciones,Activo), (error) => {throw new Error(error)})
+      const affectedRows = await conn.query(updatecliente (Nombre,Apellidos,Usuario,Contrasena,Especificaciones,), (error) => {throw new Error(error)})
       
 
       if (affectedRows === 0) {
@@ -204,7 +199,7 @@ const getclienteByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const [cliente] = await conn.query(modeloclientes.querysignIn[cliente])
+      const [cliente] = await conn.query(modelcliente.querysignIn[cliente])
 
       if(!Usuario || Usuario.Activo === 'N'){
          let code = !Usuario ? 1 : 2;
@@ -238,7 +233,7 @@ const getclienteByID = async (req = request, res = response) => {
    }=req.body
 
    if(
-       !Usuario||
+       !cliente||
        !AContrasena||
        !NContrasena
    ){

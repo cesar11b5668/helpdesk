@@ -8,13 +8,13 @@ const getpersonal = async (req = request, res = response) => {
  try {
     conn = await pool.getConnection()
 
-    const clientes = await conn.query(modeloclientes.queryGetclientes, (error) => {throw new Error(error)})
+    const personals = await conn.query(modelpersonal.queryGetpersonal, (error) => {throw new Error(error)})
 
-    if (!clientes) {
+    if (!personals) {
         res.status(404).json({msg: "no se encontraron registros"})
         return
     }
-    res.json({clientes})
+    res.json({personals})
  } catch (error) {
     console.log(error)
     res.status(500).json({error})
@@ -31,13 +31,13 @@ const getpersonalByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
   
-      const [cliente] = await conn.query(modelopersoonal.queryGetpersonalById,[id], (error) => {throw new Error(error)})
+      const [personal] = await conn.query(modelpersonal.queryGetpersonalById,[id], (error) => {throw new Error(error)})
   
-      if (!cliente) {
+      if (!personal) {
           res.status(404).json({msg: `no se encontro registro con el ID ${id}`})
           return
       }
-      res.json({cliente})
+      res.json({personal})
    } catch (error) {
       console.log(error)
       res.status(500).json({error})
@@ -53,10 +53,10 @@ const getpersonalByID = async (req = request, res = response) => {
   
    try {
       conn = await pool.getConnection()
-      const {affectedRows} = await conn.query( modeloclientes.queryDeletedcliente,[id], (error) => {throw new Error(error)})
+      const {affectedRows} = await conn.query( modelpersonal.queryDeletedpersonal,[id], (error) => {throw new Error(error)})
   
       if (affectedRows=== 0) {
-          res.status(404).json({msg: `No se pudo eliminar el cliente con el registro con el ID ${id}`})
+          res.status(404).json({msg: `No se pudo eliminar el personal con el registro con el ID ${id}`})
           return
       }
       res.json({msg: `El usario con ID ${id} se elimino correctamente`})
@@ -86,7 +86,7 @@ const getpersonalByID = async (req = request, res = response) => {
    !departamento||
    !Activo
    ){
-      res.status(400).json({msg: "Falta informacion del cliente"})
+      res.status(400).json({msg: "Falta informacion del personal"})
       return
    }
    let conn;
@@ -94,17 +94,17 @@ const getpersonalByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const cliente = await conn.query(modelopersoonal.querypersonalexist,[cliente])
+      const personal = await conn.query(modelpersonal.querypersonalexist,[personal])
 
-      if(!cliente){
-         res.status(403).json({msg: `El cliente ${personal} ya se encuentra registrado`})
+      if(!personal){
+         res.status(403).json({msg: `El personal ${personal} ya se encuentra registrado`})
          return
       }
 
       const salt = bcryptjs.genSaltSync()
       const ContrasenaCifrada = bcryptjs.hashSync(Contrasena, salt)
 
-      const affectedRows = await conn.query(modelopersoonal.queryaddpersonal[
+      const affectedRows = await conn.query(modelpersonal.queryaddpersonal[
          Nombre,
          Apellidos,
          Usuario,
@@ -116,10 +116,10 @@ const getpersonalByID = async (req = request, res = response) => {
       
 
       if (affectedRows === 0) {
-         res.status(404).json({msg: `no se pudo agregar el registro del cliente ${cliente}`})
+         res.status(404).json({msg: `no se pudo agregar el registro del personal ${personal}`})
          return
    }
-      res.json({msg: `el cliente ${cliente} se agrego correctamente :D`})
+      res.json({msg: `el personal ${personal} se agrego correctamente :D`})
       return
    } catch (error) {
       console.log(error)
@@ -139,7 +139,7 @@ const getpersonalByID = async (req = request, res = response) => {
       Contrasena,
       Activo
    } = req.body
-   console.log({cliente,
+   console.log({personal,
       Nombre,
       Apellidos,
       Usuario,
@@ -155,7 +155,7 @@ const getpersonalByID = async (req = request, res = response) => {
    !Activo   
    )
    {
-      res.status(400).json({msg: "Falta informacion del cliente"})
+      res.status(400).json({msg: "Falta informacion del personal"})
       return
    }
    let conn;
@@ -163,20 +163,20 @@ const getpersonalByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const cliente = await conn.query(modeloclientes.querygetclienteinfo, [cliente])
+      const personal = await conn.query(modelopersonals.querygetpersonalinfo, [personal])
 
-      if(cliente){
-         res.status(403).json({msg: `El cliente ${cliente} no se encuentra registrado`})
+      if(personal){
+         res.status(403).json({msg: `El personal ${personal} no se encuentra registrado`})
       }
 
-      const affectedRows = await conn.query(updatecliente (Nombre,Apellidos,Usuario,Contrasena,departamento,Activo), (error) => {throw new Error(error)})
+      const affectedRows = await conn.query(updatepersonal (Nombre,Apellidos,Usuario,Contrasena,departamento,Activo), (error) => {throw new Error(error)})
       
 
       if (affectedRows === 0) {
-         res.status(404).json({msg: `no se pudo agregar el registro del cliente ${cliente}`})
+         res.status(404).json({msg: `no se pudo agregar el registro del personal ${personal}`})
          return
    }
-      res.json({msg: `el cliente ${cliente} se actualizo correctamente :D`})
+      res.json({msg: `el personal ${personal} se actualizo correctamente :D`})
    } catch (error) {
       console.log(error)
       res.status(500).json({error})
@@ -195,7 +195,7 @@ const getpersonalByID = async (req = request, res = response) => {
    !Usuario||
    !Contrasena
    ){
-      res.status(400).json({msg: "Falta informacion del cliente"})
+      res.status(400).json({msg: "Falta informacion del personal"})
       return
    }
    let conn;
@@ -203,22 +203,22 @@ const getpersonalByID = async (req = request, res = response) => {
    try {
       conn = await pool.getConnection()
 
-      const [cliente] = await conn.query(modeloclientes.querysignIn[cliente])
+      const [personal] = await conn.query(modelopersonals.querysignIn[personal])
 
       if(!Usuario || Usuario.Activo === 'N'){
          let code = !Usuario ? 1 : 2;
-         res.status(403).json({msg: `El cliente o la contraseña son incorrectas.`, errorCode: code})
+         res.status(403).json({msg: `El personal o la contraseña son incorrectas.`, errorCode: code})
          return
       }
 
-      const accesoValido = bcryptjs.compareSync(Contrasena, cliente.Contrasena)
+      const accesoValido = bcryptjs.compareSync(Contrasena, personal.Contrasena)
 
       if (!accesoValido) {
-         res.status(403).json({msg: `El cliente o la contraseña son incorrectas.`, errorCode: 3})
+         res.status(403).json({msg: `El personal o la contraseña son incorrectas.`, errorCode: 3})
          return
       }
 
-      res.json({msg: `el cliente ${cliente} ha iniciado sesion satisfactoriamente`})
+      res.json({msg: `el personal ${personal} ha iniciado sesion satisfactoriamente`})
       return
    } catch (error) {
       console.log(error)
@@ -231,13 +231,13 @@ const getpersonalByID = async (req = request, res = response) => {
   }
   const newPassword = async (req=request,res=response)=>{
    const {
-       cliente,
+       personal,
        AContrasena,
        NContrasena
    }=req.body
 
    if(
-       !Usuario||
+       !personal||
        !AContrasena||
        !NContrasena
    ){
@@ -249,18 +249,18 @@ const getpersonalByID = async (req = request, res = response) => {
 
    try{
        conn = await pool.getConnection()
-       const [cliente]=await conn.query(`SELECT cliente, Contrasena, Activo FROM clientes WHERE cliente = '${cliente}'`)
+       const [personal]=await conn.query(`SELECT personal, Contrasena, Activo FROM personals WHERE personal = '${personal}'`)
 
-       if(!cliente || cliente.Activo == 'N'){
-           let code = !cliente ? 1: 2;
-           res.status(403).json({msg:`El cliente o la contraseña son incorrectos`,errorCode:code})
+       if(!personal || personal.Activo == 'N'){
+           let code = !personal ? 1: 2;
+           res.status(403).json({msg:`El personal o la contraseña son incorrectos`,errorCode:code})
            return
        }
 
-       const datosValidos = bcryptjs.compareSync(AContrasena,cliente.Contrasena)
+       const datosValidos = bcryptjs.compareSync(AContrasena,personal.Contrasena)
 
        if(!datosValidos){
-           res.status(403).json({msg:`El cliente o la contraseña son incorrectos`,errorCode:"3"})
+           res.status(403).json({msg:`El personal o la contraseña son incorrectos`,errorCode:"3"})
            return
        }
 
@@ -268,15 +268,15 @@ const getpersonalByID = async (req = request, res = response) => {
        const contrasenaCifrada = bcryptjs.hashSync(NContrasena,salt) 
 
        const {affectedRows} = await conn.query(`
-           UPDATE clientes SET
+           UPDATE personals SET
                Contrasena='${contrasenaCifrada}'
-           WHERE cliente= '${cliente}'
+           WHERE personal= '${personal}'
            `,(error)=>{throw new error})
        if(affectedRows===0){
-           res.status(404).json({msg:`No se pudo actualizar la contraseña de ${cliente}`})
+           res.status(404).json({msg:`No se pudo actualizar la contraseña de ${personal}`})
            return
        }
-       res.json({msg:`La contraseña de ${cliente} se actualizo correctamente`})
+       res.json({msg:`La contraseña de ${personal} se actualizo correctamente`})
    }catch(error){
        console.log(error)
        res.status(500).json({error})
