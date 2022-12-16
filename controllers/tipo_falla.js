@@ -1,5 +1,4 @@
 const { request, response } = require("express");
-const bcryptjs = require("bcryptjs")
 const pool = require("../db/connection");
 const {modelotipo_fallas} = require("../models/tipo_fallas");
 const gettipo_fallas = async (req = request, res = response) => {

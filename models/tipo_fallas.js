@@ -1,32 +1,30 @@
 const modelotipo_fallas = {    
-queryGettipo_fallas: "SELECT * FROM tipo_de_fallas",
-queryGetUsersById: `SELECT * FROM tipo_de_fallas WHERE ID = ?`,
-    queryDeleteduser: `UPDATE ticket SET Activo = 'N'WHERE ID ?`,
-    queryuserexist: `SELECT Nombre_falla FROM tipo_de_falla WHERE Nombre_de_falla = '?'`,
-    queryadduser: `INSERT INTO tipo_de_falla (
-       
+queryGettipo_fallas: "SELECT * FROM tipos_de_fallas",
+queryGettipo_fallasById: `SELECT * FROM tipos_de_fallas WHERE ID = ?`,
+queryDeletedtipo_fallas: `UPDATE tipos_de_fallas SET Prioridad_de_falla = 'N'WHERE ID ?`,
+querytipo_fallasexist: `SELECT Nombre_falla FROM tipos_de_falla WHERE Nombre_de_falla = '?'`,
+queryaddtipo_fallas: `INSERT INTO tipos_de_falla (
+       ID, 
+       nombre_de_falla,
+       descripcion_de_falla,
+       priorida_de_falla
     ) VALUES (
        '?',
        '?',
        '?',
-       ?,
-       '?',
-       '?',
-       '?',
        '?'
-      
+       
     )`,
-    querygetuserinfo: `SELECT ID,fecha,especificaciones,personal_asignado,tipo_falla,responsable 
-    FROM ticket 
+    querygettipo_fallasinfo: `SELECT ID, nombre_de_falla, descripcion_de_falla, prioridad_de_falla  
+    FROM tipos_de_fallas 
     WHERE ticket = '?'`,
 
-   queryupdatebyusuario:`UPDATE personal SET (
+   queryupdatebytipo_fallas:`UPDATE personal SET (
        ID,= '?',
-       Fecha,='?',
-       especificaciones,=? ,
-       personal,='?',
-       tipo_falla='?',
-       WHERE ticket = '?'`,
+       nombre_de_falla,='?',
+       descripcion_de_falla,=? ,
+       prioridad_de_falla,='?',
+       WHERE tipo_de_fallas = '?'`,
 
    }
 
